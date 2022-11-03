@@ -18,4 +18,14 @@
         android:id="@+id/imgClose"
         android:layout_gravity="center|bottom"
         android:background="@drawable/ic_baseline_close"/>
+
+    <TextView
+        android:id="@+id/idTVSensorStatus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="50dp" />
 </FrameLayout>

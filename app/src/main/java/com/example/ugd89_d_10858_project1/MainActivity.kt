@@ -25,10 +25,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var proximitySensor : Sensor
     lateinit var sensorManager: SensorManager
     private var check:Int = 0
+    lateinit var sensorStatusTV : TextView
     private var currentCameraId: Int = Camera.CameraInfo.CAMERA_FACING_BACK
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        sensorStatusTV = findViewById(R.id.idTVSensorStatus)
         var proximitySensorEventListener : SensorEventListener? = object : SensorEventListener{
             override fun onAccuracyChanged(sensor: Sensor, Accuracy: Int) {
 
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                         val imageClose = findViewById<View>(R.id.imgClose) as ImageButton
                         imageClose.setOnClickListener { view: View? -> System.exit(0) }
                         check = 1
+                        sensorStatusTV.text = "Front Camera"
                     }else{
                         if(check == 0) {
                             try {
@@ -66,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                             @SuppressLint("MissingInFlatedId", "LocalSuppress")
                             val imageClose = findViewById<View>(R.id.imgClose) as ImageButton
                             imageClose.setOnClickListener { view: View? -> System.exit(0) }
+                            sensorStatusTV.text = "Back Camera"
                         }
                     }
                 }
@@ -93,37 +97,37 @@ class MainActivity : AppCompatActivity() {
     }
     private fun openFrontCamera(): Camera? {
         var cameraCount = 0
-        var cam: Camera? = null
+        var mCamera: Camera? = null
         val cameraInfo = Camera.CameraInfo()
         cameraCount = Camera.getNumberOfCameras()
-        for (camIdx in 0 until cameraCount) {
-            Camera.getCameraInfo(camIdx, cameraInfo)
+        for (camId in 0 until cameraCount) {
+            Camera.getCameraInfo(camId, cameraInfo)
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
                 try {
-                    cam = Camera.open(camIdx)
+                    mCamera = Camera.open(camId)
                 } catch (e: RuntimeException) {
                     Log.e("Your_TAG", "Camera failed to open: " + e.localizedMessage)
                 }
             }
         }
-        return cam
+        return mCamera
     }
 
     private fun openBackCamera(): Camera? {
         var cameraCount = 0
-        var cam: Camera? = null
+        var mCamera: Camera? = null
         val cameraInfo = Camera.CameraInfo()
         cameraCount = Camera.getNumberOfCameras()
-        for (camIdx in 0 until cameraCount) {
-            Camera.getCameraInfo(camIdx, cameraInfo)
+        for (camId in 0 until cameraCount) {
+            Camera.getCameraInfo(camId, cameraInfo)
             if (cameraInfo.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
                 try {
-                    cam = Camera.open(camIdx)
+                    mCamera = Camera.open(camId)
                 } catch (e: RuntimeException) {
                     Log.e("Your_TAG", "Camera failed to open: " + e.localizedMessage)
                 }
             }
         }
-        return cam
+        return mCamera
     }
 }
